@@ -1,0 +1,36 @@
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+from django.core.urlresolvers import reverse_lazy
+from django.contrib.auth.decorators import login_required
+from models import *
+from forms import *
+
+# Create your views here.
+
+from django.shortcuts import render_to_response
+
+def index(request):
+  if request.user.is_authenticated():
+    return redirect(reverse_lazy('home'))
+  else:
+    return redirect(reverse_lazy('login'))
+
+@login_required
+def home(request):
+    if request.method == "GET":
+    	form = RatingForm(user=request.user)
+    else:
+	form = RatingForm(request.POST, user=request.user)
+        if form.is_valid:
+            post = form.save(commit=False)
+    	    post.user = User.objects.get(username=request.user)
+    	    post.save()
+    return render_to_response('base.html', {'form': form,}, context_instance=RequestContext(request))
+
+def get_ratings(request, user_id=None):
+    response_dict = dict()
+    if user_id:
+	response_dict['user_ratings'] = Rating.objects.get(user__id=user_id)
+    else:
+        response_dict['all_ratings'] = Rating.objects.all()
+    return render_to_response('all.html', response_dict)

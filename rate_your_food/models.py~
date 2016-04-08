@@ -1,0 +1,13 @@
+from django.models import Model
+from django.contrib.auth import User
+
+class Food(models.Model):
+    food_name = models.CharField(max_length=30)
+    ingradients = models.TextField(max_length=400)
+    image_url = models.ImageField()
+
+class Rating(models.Model):
+    user = models.ForeignKey(User)
+    food = models.ForeignKey(Food)
+    stars = models.IntegerField()
+    description = models.TextField()

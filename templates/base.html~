@@ -1,0 +1,14 @@
+<html>
+{% block head %}
+{% endblock %}
+{% block body %}
+<form method="POST" class="post-form">
+{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="SAVE">
+</form>
+{% endblock %}
+<a href="{% url 'all' %}">See all ratings</a>
+<a href="{% url 'logout' %}">Logout</a>
+</html>
+

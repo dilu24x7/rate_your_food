@@ -1,0 +1,8 @@
+from django.conf.urls import url
+from django.contrib import admin
+from foods import views
+
+urlpatterns = [
+     url(r'^$', views.home, name='home'),
+     url(r'^get_ratings/((?P<user_id>\d+)/)?$', views.get_ratings, name='all'),
+]
